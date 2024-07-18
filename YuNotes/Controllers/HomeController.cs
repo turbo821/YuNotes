@@ -13,7 +13,7 @@ namespace YuNotes.Controllers
             _logger = logger;
         }
 
-        [Route("/")]
+        [Route("/index")]
         public IActionResult Index()
         {
             return View();

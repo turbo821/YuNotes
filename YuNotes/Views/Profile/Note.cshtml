@@ -1,3 +1,27 @@
 ﻿@{
     ViewData["Title"] = "Note";
 }
+
+@model NoteModel;
+
+
+<h2>Заметка</h2>
+<div class="row" style="width: 300px">
+
+    <form class="col" asp-action="EditNote" method="post" asp-route-id="@Model.Id">
+        <p>
+            <label asp-for="Title">Заголовок</label><br />
+            <input type="text" asp-for="Title" />
+        </p>
+        <p>
+            <label asp-for="Text">Текст</label><br />
+            <textarea asp-for="Text">@Model.Text</textarea>
+        </p>
+        <p>
+            <input type="submit" value="Сохранить" />
+        </p>
+    </form>    
+    <form class="col" method="post" asp-action="DeleteNote" asp-route-id="@Model.Id">
+        <input type="submit" value="Удалить" />
+    </form>
+</div>

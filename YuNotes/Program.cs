@@ -1,6 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using YuNotes.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
+string connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<NotesContext>(options => options.UseSqlite(connection));
+
 
 var app = builder.Build();
 
@@ -18,5 +25,4 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();
