@@ -5,8 +5,8 @@ namespace YuNotes.Data
 {
     public class NotesContext : DbContext
     {
-        public DbSet<NoteModel> Notes { get; set; } = null!;
-        //public DbSet<NoteGroupModel> Groups = null!;
+        public DbSet<Note> Notes { get; set; } = null!;
+        public DbSet<NoteGroup> Groups { get; set; } = null!;
 
         public NotesContext(DbContextOptions options)
             :base(options)
@@ -16,14 +16,12 @@ namespace YuNotes.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<NoteGroupModel>().HasData(
-            //    new NoteGroupModel("Work"),
-            //    new NoteGroupModel("Life"),
-            //    new NoteGroupModel("Personal"),
-            //    new NoteGroupModel("Travel")
-            //    );
-            modelBuilder.Entity<NoteModel>().HasData(
-                new NoteModel() { Id = Guid.NewGuid(), Title = "Первая заметка", Text = "Текстовый текст" }
+            modelBuilder.Entity<NoteGroup>().HasData(
+
+                new NoteGroup{ Id = Guid.NewGuid(), Name = "Work" },
+                new NoteGroup { Id = Guid.NewGuid(), Name = "Life" },
+                new NoteGroup { Id = Guid.NewGuid(), Name = "Personal" },
+                new NoteGroup { Id = Guid.NewGuid(), Name = "Travel" }
                 );
         }
     }

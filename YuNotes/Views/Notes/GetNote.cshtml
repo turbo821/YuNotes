@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Note";
+}
+
+@model NoteViewModel;
+
+
+<h2>Заметка</h2>
+<div class="row" style="width: 300px">
+
+    <form class="col" asp-action="EditNote" method="post" asp-route-id="@Model.Note.Id">
+        <p>
+            <label asp-for="Note.Title">Заголовок</label><br />
+            <input type="text" asp-for="Note.Title" />
+        </p>
+        <p>
+            <label asp-for="Note.Text">Текст</label><br />
+            <textarea asp-for="Note.Text">@Model.Note.Text</textarea>
+        </p>
+        <p>
+            <label asp-for="Note.GroupId">Группы</label><br />
+            <select asp-for="Note.GroupId" asp-items="@Model.NoteGroups"></select>
+        </p>
+        <p>
+            <input type="submit" value="Сохранить" />
+        </p>
+    </form>    
+    <form class="col" method="post" asp-action="DeleteNote" asp-route-id="@Model.Note.Id">
+        <input type="submit" value="Удалить" />
+    </form>
+</div>

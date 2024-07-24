@@ -1,6 +1,6 @@
 ﻿namespace YuNotes.Models
 {
-    public class UserModel
+    public class User
     {
     }
 }

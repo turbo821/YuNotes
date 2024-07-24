@@ -2,7 +2,7 @@
 
 namespace YuNotes.Controllers
 {
-    public class GatewayController : Controller
+    public class LoginController : Controller
     {
         [Route("/login")]
         public IActionResult Login()
