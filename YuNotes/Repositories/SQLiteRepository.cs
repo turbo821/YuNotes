@@ -6,21 +6,18 @@ using YuNotes.Models;
 
 namespace YuNotes.Repositories
 {
-    public class SQLiteRepository
+    public class SQLiteRepository : IRepository
     {
         NotesContext db;
-        IEnumerable<Note>? notes;
-        IEnumerable<NoteGroup>? groups;
 
         public SQLiteRepository(NotesContext context)
         {
             db = context;
         }
 
-        public async Task GetAllNotes()
+        public async Task<IEnumerable<Note>> GetAllNotes()
         {
-            notes = await db.Notes.ToListAsync();
-            groups = await db.Groups.ToListAsync();
+            return await db.Notes.ToListAsync();
         }
 
         public async Task<Note> GetNote(Guid id)
@@ -39,6 +36,45 @@ namespace YuNotes.Repositories
                 note = new() { Id = id };
 
             return note;
+        }
+
+        public async Task DeleteNote(Guid id)
+        {
+
+            Note? note = await db.Notes.FirstOrDefaultAsync(n => n.Id == id);
+            if (note != null)
+            {
+                db.Notes.Remove(note);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task EditNote(Note note)
+        {
+            NoteGroup? group = db.Groups.FirstOrDefault(g => g.Id == note.GroupId);
+            note.Group = group;
+
+            if (!db.Notes.Any(n => n.Id == note.Id))
+            {
+                db.Notes.Add(note);
+            }
+            else
+            {
+                db.Notes.Update(note);
+            }
+
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<NoteGroup>> GetAllGroups()
+        {
+            return await db.Groups.ToListAsync();
+        }
+
+        public async Task AddGroup(NoteGroup addedGroup)
+        {
+            db.Groups.Add(addedGroup);
+            await db.SaveChangesAsync();
         }
     }
 }
