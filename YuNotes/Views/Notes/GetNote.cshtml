@@ -8,7 +8,7 @@
 <h2>Заметка</h2>
 <div class="row" style="width: 300px">
 
-    <form class="col" asp-action="EditNote" method="post" asp-route-id="@Model.Note.Id">
+    <form class="col" asp-action="EditNote" method="post" asp-route-note.id="@Model.Note.Id">
         <p>
             <label asp-for="Note.Title">Заголовок</label><br />
             <input type="text" asp-for="Note.Title" />

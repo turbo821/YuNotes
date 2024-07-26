@@ -1,6 +1,7 @@
 ﻿namespace YuNotes.Models
 {
-    public class User
+    public class User : BaseModel
     {
+
     }
 }

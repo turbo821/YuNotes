@@ -65,8 +65,9 @@ namespace YuNotes.Controllers
 
         [HttpPost]
         [Route("note/edit")]
-        public async Task<IActionResult> EditNote(Note note)
+        public async Task<IActionResult> EditNote(NoteViewModel model)
         {
+            Note note = model.Note;
             NoteGroup? group = db.Groups.FirstOrDefault(g => g.Id == note.GroupId);
             note.Group = group;
 
