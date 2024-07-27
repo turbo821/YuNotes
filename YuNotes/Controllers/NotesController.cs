@@ -22,9 +22,9 @@ namespace YuNotes.Controllers
         [HttpGet]
         [Route("/")]
         [Route("notes")]
-        public async Task<IActionResult> GetAllNotes()
+        public async Task<IActionResult> GetAllNotes(Guid? groupId)
         {
-            IEnumerable<Note> notes = await repo.GetAllNotes();
+            IEnumerable<Note> notes = await repo.GetAllNotes(groupId);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
             CatalogViewModel viewModel = new CatalogViewModel() { Notes = notes, NoteGroups = groups };
 
@@ -68,6 +68,16 @@ namespace YuNotes.Controllers
         {
 
             await repo.AddGroup(addedGroup);
+
+            return RedirectToAction("GetAllNotes");
+        }
+
+        [HttpGet]
+        [Route("note/deletegroup")]
+        public async Task<IActionResult> DeleteGroup(Guid id)
+        {
+
+            await repo.DeleteGroup(id);
 
             return RedirectToAction("GetAllNotes");
         }

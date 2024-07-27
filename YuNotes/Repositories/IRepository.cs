@@ -5,11 +5,12 @@ namespace YuNotes.Repositories
 {
     public interface IRepository
     {
-        Task<IEnumerable<Note>> GetAllNotes();
+        Task<IEnumerable<Note>> GetAllNotes(Guid? groupId);
         Task<Note> GetNote(Guid id);
         Task DeleteNote(Guid id);
         Task EditNote(Note note);
         Task<IEnumerable<NoteGroup>> GetAllGroups();
         Task AddGroup(NoteGroup addedGroup);
+        Task DeleteGroup(Guid id);
     }
 }

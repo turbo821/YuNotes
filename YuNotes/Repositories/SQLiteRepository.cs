@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using YuNotes.Data;
 using YuNotes.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace YuNotes.Repositories
 {
@@ -15,9 +16,10 @@ namespace YuNotes.Repositories
             db = context;
         }
 
-        public async Task<IEnumerable<Note>> GetAllNotes()
+        public async Task<IEnumerable<Note>> GetAllNotes(Guid? groupId)
         {
-            return await db.Notes.ToListAsync();
+            if(groupId == null) return await db.Notes.ToListAsync();
+            else return await db.Notes.Where(n => n.GroupId == groupId).ToListAsync();
         }
 
         public async Task<Note> GetNote(Guid id)
@@ -56,11 +58,17 @@ namespace YuNotes.Repositories
 
             if (!db.Notes.Any(n => n.Id == note.Id))
             {
+                note.CreateDate = DateTime.Now;
+                note.EditDate = DateTime.Now;
                 db.Notes.Add(note);
             }
             else
             {
-                db.Notes.Update(note);
+                Note editNote = db.Notes.FirstOrDefault(n => n.Id == note.Id)!;
+                editNote.Title = note.Title;
+                editNote.Text = note.Text;
+                editNote.Group = group;
+                editNote.EditDate = DateTime.Now;
             }
 
             await db.SaveChangesAsync();
@@ -75,6 +83,17 @@ namespace YuNotes.Repositories
         {
             db.Groups.Add(addedGroup);
             await db.SaveChangesAsync();
+        }
+
+        public async Task DeleteGroup(Guid id)
+        {
+
+            NoteGroup? group = await db.Groups.FirstOrDefaultAsync(g => g.Id == id);
+            if (group != null)
+            {
+                db.Groups.Remove(group);
+                await db.SaveChangesAsync();
+            }
         }
     }
 }

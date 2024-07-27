@@ -7,10 +7,25 @@
 <section class="row">
     <div class="col-2">
         <ul class="list-group">
+
+            <li class="list-group-item">
+                <span>All</span>
+                <span>
+                    <a asp-action="GetAllNotes"><img class="find-img" src="~/img/icons8-find.svg" /></a>
+                    <a><img class="delete-img-nonopacity" src="~/img/icons8-delete-30.png" /></a>
+                </span>
+            </li>
             @foreach(var group in Model.NoteGroups)
             {
-                <li class="list-group-item">@group.Name</li>
+                <li class="list-group-item">
+                    <span>@group.Name</span>
+                    <span>
+                        <a asp-action="GetAllNotes" asp-route-groupid="@group.Id"><img class="find-img" src="~/img/icons8-find.svg" /></a>
+                        <a asp-action="DeleteGroup" asp-route-id="@group.Id"><img class="delete-img" src="~/img/icons8-delete-30.png" /></a>
+                    </span>
+                </li>
             }
+
             <li class="list-group-item">
                 <form method="post" asp-action="AddGroup" asp-route-id="@Guid.NewGuid()">
                     <input type="text" asp-for="AddedGroup.Name" />
@@ -26,6 +41,7 @@
         @foreach (var note in Model.Notes)
         {
             <div style="width: 300px">
+                <p><span>@note.ViewCreateDate()</span> <span>@note.ViewEditDate()</span></p>
                 <h2>@note.Title</h2>
                 <h4>@note.Group?.Name</h4>
                 <p>@note.Text</p>

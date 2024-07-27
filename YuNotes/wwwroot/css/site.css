@@ -20,3 +20,30 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.list-group-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.list-group-item .delete-img {
+    visibility: hidden;
+    opacity: 0.3;
+    filter: brightness(0) saturate(100%) invert(19%) sepia(100%) saturate(7464%) hue-rotate(17deg) brightness(96%) contrast(111%);
+}
+
+.delete-img-nonopacity {
+    opacity: 0;
+}
+
+.list-group-item .find-img {
+    visibility: hidden;
+    opacity: 0.3;
+    filter: brightness(0) saturate(100%) invert(8%) sepia(100%) saturate(7006%) hue-rotate(256deg) brightness(81%) contrast(101%);
+    width: 30px;
+}
+
+.list-group-item:hover .delete-img, .list-group-item:hover .find-img {
+    visibility: visible;
+}
