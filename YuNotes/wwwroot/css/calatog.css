@@ -1,0 +1,21 @@
+﻿.note-item {
+    width: 70%;
+    background-color: #ccf6c8;
+    margin: 40px auto;
+}
+
+.notes-items {
+    flex-direction: column;
+}
+
+.group-items {
+    margin: 30px 0;
+}
+
+.add-group input {
+    margin: 5px auto;
+}
+
+.notes-items .title {
+    margin: 20px 5px;
+}

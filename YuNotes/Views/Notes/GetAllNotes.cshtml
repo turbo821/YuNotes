@@ -4,8 +4,13 @@
 
 @model CatalogViewModel
 
+@section Links {
+    <link rel="stylesheet" href="~/css/calatog.css" asp-append-version="true" />
+}
+
 <section class="row">
-    <div class="col-2">
+
+    <div class="col-3 group-items">
         <ul class="list-group">
 
             <li class="list-group-item">
@@ -25,42 +30,41 @@
                     </span>
                 </li>
             }
-
             <li class="list-group-item">
-                <form method="post" asp-action="AddGroup" asp-route-id="@Guid.NewGuid()">
-                    <input type="text" asp-for="AddedGroup.Name" />
-                    <input type="submit" value="Добавить группу" />
+                <form method="post" asp-action="AddGroup" asp-route-id="@Guid.NewGuid()" class="add-group">
+                    <input type="text" asp-for="AddedGroup.Name" class="form-control col-12" />
+                    <input type="submit" class="btn btn-success col-12" value="Добавить группу" />
                 </form>
             </li>
         </ul>
     </div>
 
-    <div class="col-10">
-        <h2>Твои заметки</h2>
+    <div class="col-8 m-3 notes-items">
+        <h2 class="title">Твои заметки</h2>
 
         @foreach (var note in Model.Notes)
         {
-            <div style="width: 300px">
-                <p><span>@note.ViewCreateDate()</span> <span>@note.ViewEditDate()</span></p>
-                <h2>@note.Title</h2>
-                <h4>@note.Group?.Name</h4>
-                <p>@note.Text</p>
-                <div class="row">
-                    <form class="col" method="post" asp-action="DeleteNote" asp-route-id="@note.Id">
-                        <input type="submit" value="Удалить" />
-                    </form>
+            <div class="card note-item">
+                <div class="card-body">
+                    <p class="card-text text-end">@note.Group?.Name</p>
+                    <h2 class="card-title">@note.Title</h2>
+                    <h6 class="card-subtitle mb-2 text-muted">Изменено: @note.ViewEditDate()</h6>
+                    <div class="row">
+                        <form class="col" method="post" asp-action="DeleteNote" asp-route-id="@note.Id">
+                            <button type="submit" class="btn btn-light">Удалить</button>
+                        </form>
 
-                    <form class="col" method="get" asp-action="GetNote" asp-route-id="@note.Id">
-                        <input type="submit" value="Изменить" />
-                    </form>
+                        <form class="col" method="get" asp-action="GetNote" asp-route-id="@note.Id">
+                            <button type="submit" class="btn btn-light">Изменить</button>
+                        </form>
+                    </div>
                 </div>
-
-
             </div>
         }
 
-
-        <p><a asp-action="GetNote" asp-route-id="@Guid.NewGuid()">Создать заметку</a></p>
+        <div class="card note-item">
+            <a asp-action="GetNote" class="btn btn-success" asp-route-id="@Guid.NewGuid()">Создать заметку</a>
+        </div>
     </div>
 </section>
 
