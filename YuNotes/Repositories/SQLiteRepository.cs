@@ -18,18 +18,18 @@ namespace YuNotes.Repositories
 
         public async Task<IEnumerable<Note>> GetAllNotes(Guid? groupId)
         {
-            if(groupId == null) return await db.Notes.ToListAsync();
-            else return await db.Notes.Where(n => n.GroupId == groupId).ToListAsync();
+            if(groupId == null) return await db.Notes.AsNoTracking().ToListAsync();
+            else return await db.Notes.Where(n => n.GroupId == groupId).AsNoTracking().ToListAsync();
         }
 
         public async Task<Note> GetNote(Guid id)
         {
-            Note note;
+            Note? note;
             if (db.Notes.Any(n => n.Id == id))
             {
                 note = await db.Notes.FindAsync(id);
                 
-                if(note == null)
+                if(note is null)
                 {
                     note = new() { Id = id };
                 }
@@ -54,20 +54,30 @@ namespace YuNotes.Repositories
         public async Task EditNote(Note note)
         {
             NoteGroup? group = db.Groups.FirstOrDefault(g => g.Id == note.GroupId);
-            note.Group = group;
 
             if (!db.Notes.Any(n => n.Id == note.Id))
             {
                 note.CreateDate = DateTime.Now;
                 note.EditDate = DateTime.Now;
+                note.Group = group;
                 db.Notes.Add(note);
             }
             else
             {
                 Note editNote = db.Notes.FirstOrDefault(n => n.Id == note.Id)!;
-                editNote.Title = note.Title;
-                editNote.Text = note.Text;
-                editNote.Group = group;
+
+                if (editNote == note)
+                {
+                    return;
+                }
+
+                if (editNote.Title != note.Title) editNote.Title = note.Title;
+                if (editNote.Text != note.Text) editNote.Text = note.Text;
+                if (editNote.GroupId != note.GroupId)
+                {
+                    editNote.GroupId = note.GroupId;
+                    editNote.Group = group;
+                }
                 editNote.EditDate = DateTime.Now;
             }
 

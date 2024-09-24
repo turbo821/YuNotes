@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using YuNotes.Data;
 using YuNotes.Models;
 using YuNotes.Repositories;
+using YuNotes.ViewModels;
 
 namespace YuNotes.Controllers
 {
@@ -22,11 +23,22 @@ namespace YuNotes.Controllers
         [HttpGet]
         [Route("/")]
         [Route("notes")]
-        public async Task<IActionResult> GetAllNotes(Guid? groupId)
+        public async Task<IActionResult> Catalog(Guid? groupId, SortState sortOrder = SortState.EditDesc)
         {
             IEnumerable<Note> notes = await repo.GetAllNotes(groupId);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
-            CatalogViewModel viewModel = new CatalogViewModel() { Notes = notes, NoteGroups = groups };
+
+            notes = sortOrder switch
+            {
+                SortState.TitleDesc => notes.OrderByDescending(n => n.Title),
+                SortState.EditAsc => notes.OrderBy(s => s.EditDate),
+                SortState.EditDesc => notes.OrderByDescending(s => s.EditDate),
+                SortState.CreateAsc => notes.OrderBy(s => s.CreateDate),
+                SortState.CreateDesc => notes.OrderByDescending(s => s.CreateDate),
+                _ => notes.OrderBy(s => s.Title),
+            };
+
+            CatalogViewModel viewModel = new CatalogViewModel() { Notes = notes, NoteGroups = groups, SortViewModel = new SortViewModel(sortOrder) };
 
             return View(viewModel);
         }
@@ -49,7 +61,7 @@ namespace YuNotes.Controllers
         {
             await repo.DeleteNote(id);
 
-            return RedirectToAction("GetAllNotes");
+            return RedirectToAction("Catalog");
         }
 
         [HttpPost]
@@ -59,7 +71,7 @@ namespace YuNotes.Controllers
             Note note = model.Note;
             await repo.EditNote(note);
 
-            return RedirectToAction("GetAllNotes");
+            return RedirectToAction("Catalog");
         }
 
         [HttpPost]
@@ -69,7 +81,7 @@ namespace YuNotes.Controllers
 
             await repo.AddGroup(addedGroup);
 
-            return RedirectToAction("GetAllNotes");
+            return RedirectToAction("Catalog");
         }
 
         [HttpGet]
@@ -79,7 +91,7 @@ namespace YuNotes.Controllers
 
             await repo.DeleteGroup(id);
 
-            return RedirectToAction("GetAllNotes");
+            return RedirectToAction("Catalog");
         }
     }
 }

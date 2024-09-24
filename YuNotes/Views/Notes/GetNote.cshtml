@@ -10,6 +10,12 @@
 
     <form class="col" asp-action="EditNote" method="post" asp-route-note.id="@Model.Note.Id">
         <p>
+            Дата редактирования: @Model.Note.EditDate.ToString("g")
+        </p>
+        <p>
+            Дата создания: @Model.Note.CreateDate.ToString("g")
+        </p>
+        <p>
             <label asp-for="Note.Title">Заголовок</label><br />
             <input type="text" asp-for="Note.Title" />
         </p>

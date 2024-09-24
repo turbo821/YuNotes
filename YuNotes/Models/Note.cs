@@ -11,13 +11,28 @@ namespace YuNotes.Models
         public Guid? GroupId { get; set; }
         public NoteGroup? Group { get; set; }
 
-        public string ViewEditDate()
+        public static bool operator ==(Note left, Note right)
         {
-            return EditDate.ToLongTimeString();
+            if (left.Id == right.Id
+                && left.Title == right.Title
+                && left.Text == right.Text
+                && left.GroupId == right.GroupId)
+            {
+                return true;
+            }
+            return false;
         }
-        public string ViewCreateDate()
+
+        public static bool operator !=(Note left, Note right)
         {
-            return CreateDate.ToLongTimeString();
+            if (left.Id == right.Id
+                && left.Title == right.Title
+                && left.EditDate == right.EditDate
+                && left.CreateDate == right.CreateDate)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
