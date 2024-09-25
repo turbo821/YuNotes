@@ -23,6 +23,25 @@ namespace YuNotes.Data
                 new NoteGroup { Id = Guid.NewGuid(), Name = "Personal" },
                 new NoteGroup { Id = Guid.NewGuid(), Name = "Travel" }
                 );
+
+            modelBuilder.Entity<Note>()
+                .HasKey(n => n.Id);
+
+            modelBuilder.Entity<Note>()
+                .HasOne(n => n.Group)
+                .WithMany(g => g.Notes)
+                .HasForeignKey(n => n.GroupId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NoteGroup>()
+                .HasKey(g => g.Id);
+
+            modelBuilder.Entity<NoteGroup>()
+                .HasMany(g => g.Notes)
+                .WithOne(n => n.Group)
+                .HasForeignKey(n => n.GroupId)
+                .OnDelete(DeleteBehavior.SetNull);
+
         }
     }
 }

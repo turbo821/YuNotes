@@ -8,5 +8,6 @@ namespace YuNotes.ViewModels
         public IEnumerable<NoteGroup> NoteGroups { get; set; } = new List<NoteGroup>();
         public NoteGroup AddedGroup { get; set; } = new();
         public SortViewModel SortViewModel { get; set; } = new SortViewModel(SortState.EditDesc);
+        public string? Title { get; set; }
     }
 }

@@ -23,9 +23,9 @@ namespace YuNotes.Controllers
         [HttpGet]
         [Route("/")]
         [Route("notes")]
-        public async Task<IActionResult> Catalog(Guid? groupId, SortState sortOrder = SortState.EditDesc)
+        public async Task<IActionResult> Catalog(Guid? groupId, string? title, SortState sortOrder = SortState.EditDesc)
         {
-            IEnumerable<Note> notes = await repo.GetAllNotes(groupId);
+            IEnumerable<Note> notes = await repo.GetAllNotes(groupId, title);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
 
             notes = sortOrder switch
@@ -38,7 +38,7 @@ namespace YuNotes.Controllers
                 _ => notes.OrderBy(s => s.Title),
             };
 
-            CatalogViewModel viewModel = new CatalogViewModel() { Notes = notes, NoteGroups = groups, SortViewModel = new SortViewModel(sortOrder) };
+            CatalogViewModel viewModel = new CatalogViewModel() { Notes = notes, NoteGroups = groups, SortViewModel = new SortViewModel(sortOrder), Title = title };
 
             return View(viewModel);
         }
@@ -78,9 +78,10 @@ namespace YuNotes.Controllers
         [Route("note/addgroup")]
         public async Task<IActionResult> AddGroup(NoteGroup addedGroup)
         {
+            if(addedGroup.Name is null)
+                RedirectToAction("Catalog");
 
             await repo.AddGroup(addedGroup);
-
             return RedirectToAction("Catalog");
         }
 
@@ -88,9 +89,7 @@ namespace YuNotes.Controllers
         [Route("note/deletegroup")]
         public async Task<IActionResult> DeleteGroup(Guid id)
         {
-
             await repo.DeleteGroup(id);
-
             return RedirectToAction("Catalog");
         }
     }

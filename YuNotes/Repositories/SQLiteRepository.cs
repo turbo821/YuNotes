@@ -16,10 +16,25 @@ namespace YuNotes.Repositories
             db = context;
         }
 
-        public async Task<IEnumerable<Note>> GetAllNotes(Guid? groupId)
+        public async Task<IEnumerable<Note>> GetAllNotes(Guid? groupId, string? title)
         {
-            if(groupId == null) return await db.Notes.AsNoTracking().ToListAsync();
-            else return await db.Notes.Where(n => n.GroupId == groupId).AsNoTracking().ToListAsync();
+            IQueryable<Note> query;
+            if (groupId == null)
+                query = db.Notes.Include(n => n.Group).AsNoTracking();
+            else
+                query = db.Notes.Where(n => n.GroupId == groupId)
+                    .Include(n => n.Group).AsNoTracking();
+
+            if(title == null)
+                return await query.ToListAsync();
+            else
+            {
+                List<Note> notes = await query.ToListAsync();
+
+                return notes.Where(n => n.Title.ToUpper().Contains(title.ToUpper(), StringComparison.CurrentCultureIgnoreCase));
+            }
+                
+
         }
 
         public async Task<Note> GetNote(Guid id)
@@ -42,9 +57,8 @@ namespace YuNotes.Repositories
 
         public async Task DeleteNote(Guid id)
         {
-
             Note? note = await db.Notes.FirstOrDefaultAsync(n => n.Id == id);
-            if (note != null)
+            if (note is not null)
             {
                 db.Notes.Remove(note);
                 await db.SaveChangesAsync();

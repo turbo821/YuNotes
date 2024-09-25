@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Catalog";
+    bool bl = @Guid.TryParse(Context.Request.Query["groupid"], out Guid groupId);
 }
 
 @model CatalogViewModel
@@ -10,7 +11,7 @@
 
 <section class="row">
 
-    <div class="col-2 group-items">
+    <div class="col-3 group-items">
         <ul class="list-group">
 
             <li class="list-group-item">
@@ -41,17 +42,27 @@
 
     <div class="col-8 m-3 notes-items">
         <h2 class="title">Твои заметки</h2>
-
-        <div class="dropdown col-2">
-            <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Сортировка
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><sort-notes action="Catalog" property="@Model.SortViewModel.TitleSort" class="dropdown-item">по названию</sort-notes></li>
-                <li><sort-notes action="Catalog" property="@Model.SortViewModel.EditTimeSort" class="dropdown-item">по дате изменения</sort-notes></li>
-                <li><sort-notes action="Catalog" property="@Model.SortViewModel.CreateTimeSort" class="dropdown-item">по дате создания</sort-notes></li>
-            </ul>
+        <div class="row">
+            <form method="get" class="form-inline col-8 row search-form">
+                <input asp-for="Title" class="form-control search-input" placeholder="поиск по названию" />
+                <input type="submit" class="btn btn-success search-input" value="Найти" />
+            </form>
+            <form method="get" class="form-inline col-2">
+                <input type="submit" class="btn btn-success" value="Сброс" />
+            </form>
+            <div class="dropdown col-2">
+                <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    Сортировка
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.TitleSort" group-id="@groupId" class="dropdown-item">по названию</sort-notes></li>
+                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.EditTimeSort" group-id="@groupId" class="dropdown-item">по дате изменения</sort-notes></li>
+                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.CreateTimeSort" group-id="@groupId" class="dropdown-item">по дате создания</sort-notes></li>
+                </ul>
+            </div>
         </div>
+
+
 
         @foreach (var note in Model.Notes)
         {

@@ -19,3 +19,12 @@
 .notes-items .title {
     margin: 20px 5px;
 }
+.search-form {
+    flex-wrap: nowrap;
+}
+
+.search-input {
+    display: inline;
+    width: 45%;
+    margin: 0 2%;
+}
