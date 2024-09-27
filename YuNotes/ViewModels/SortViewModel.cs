@@ -2,12 +2,14 @@
 {
     public class SortViewModel
     {
+        public SortState Current {  get; set; }
         public SortState TitleSort { get; set; }
         public SortState EditTimeSort { get; set; }
         public SortState CreateTimeSort { get; set; }
 
         public SortViewModel(SortState sortOrder)
         {
+            Current = sortOrder;
 
             TitleSort = SortState.TitleAsc;
             EditTimeSort = SortState.EditDesc;

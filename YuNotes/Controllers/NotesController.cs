@@ -23,9 +23,9 @@ namespace YuNotes.Controllers
         [HttpGet]
         [Route("/")]
         [Route("notes")]
-        public async Task<IActionResult> Catalog(Guid? groupId, string? title, SortState sortOrder = SortState.EditDesc)
+        public async Task<IActionResult> Catalog(Guid? groupid, string? title, SortState sortOrder = SortState.EditDesc)
         {
-            IEnumerable<Note> notes = await repo.GetAllNotes(groupId, title);
+            IEnumerable<Note> notes = await repo.GetAllNotes(groupid, title);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
 
             notes = sortOrder switch

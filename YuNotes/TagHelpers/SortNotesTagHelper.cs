@@ -9,7 +9,6 @@ namespace YuNotes.TagHelpers
     public class SortNotesTagHelper : TagHelper
     {
         public SortState Property { get; set; }
-
         public string? Action { get; set; }
 
         [ViewContext]
@@ -28,15 +27,16 @@ namespace YuNotes.TagHelpers
             output.TagName = "a";
 
             Guid.TryParse(ViewContext.HttpContext.Request.Query["groupid"], out Guid groupId);
+            string? sortTitle = ViewContext.HttpContext.Request.Query["title"];
 
             string? url;
             if (groupId != Guid.Empty)
             {
-                url = urlHelper.Action(Action, new { sortOrder = Property, groupId = groupId });
+                url = urlHelper.Action(Action, new { sortOrder = Property, groupId = groupId, title = sortTitle });
             }
             else
             {
-                url = urlHelper.Action(Action, new { sortOrder = Property });
+                url = urlHelper.Action(Action, new { sortOrder = Property, title = sortTitle });
             }
             output.Attributes.SetAttribute("href", url);    
         }
