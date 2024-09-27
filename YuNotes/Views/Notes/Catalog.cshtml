@@ -1,6 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Catalog";
-    bool bl = @Guid.TryParse(Context.Request.Query["groupid"], out Guid groupId);
 }
 
 @model CatalogViewModel
@@ -13,30 +12,15 @@
 
     <div class="col-3 group-items">
         <ul class="list-group">
+            <vc:group-menu groups="Model.NoteGroups"/>
 
-            <li class="list-group-item">
-                <span>All</span>
-                <span>
-                    <a asp-action="Catalog"><img class="find-img" src="~/img/icons8-find.svg" /></a>
-                    <a><img class="delete-img-nonopacity" src="~/img/icons8-delete-30.png" /></a>
-                </span>
-            </li>
-            @foreach(var group in Model.NoteGroups)
-            {
-                <li class="list-group-item">
-                    <span>@group.Name</span>
-                    <span>
-                        <a asp-action="Catalog" asp-route-groupid="@group.Id"><img class="find-img" src="~/img/icons8-find.svg" /></a>
-                        <a asp-action="DeleteGroup" asp-route-id="@group.Id"><img class="delete-img" src="~/img/icons8-delete-30.png" /></a>
-                    </span>
-                </li>
-            }
             <li class="list-group-item">
                 <form method="post" asp-action="AddGroup" asp-route-id="@Guid.NewGuid()" class="add-group">
                     <input type="text" asp-for="AddedGroup.Name" class="form-control col-12" />
                     <input type="submit" class="btn btn-success col-12" value="Добавить группу" />
                 </form>
             </li>
+
         </ul>
     </div>
 
@@ -55,37 +39,14 @@
                     Сортировка
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.TitleSort" group-id="@groupId" class="dropdown-item">по названию</sort-notes></li>
-                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.EditTimeSort" group-id="@groupId" class="dropdown-item">по дате изменения</sort-notes></li>
-                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.CreateTimeSort" group-id="@groupId" class="dropdown-item">по дате создания</sort-notes></li>
+                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.TitleSort" class="dropdown-item">по названию</sort-notes></li>
+                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.EditTimeSort" class="dropdown-item">по дате изменения</sort-notes></li>
+                    <li><sort-notes action="Catalog" property="@Model.SortViewModel.CreateTimeSort" class="dropdown-item">по дате создания</sort-notes></li>
                 </ul>
             </div>
         </div>
 
-
-
-        @foreach (var note in Model.Notes)
-        {
-            <div class="card note-item">
-                <div class="card-body">
-                    <p class="card-text text-end">@note.Group?.Name</p>
-                    <h2 class="card-title">@note.Title</h2>
-                    <h6 class="card-subtitle mb-2 text-muted">Изменено: @note.EditDate.ToString("d MMM HH:mm")</h6>
-                    <div class="row">
-                        <form class="col" method="get" asp-action="GetNote" asp-route-id="@note.Id">
-                            <button type="submit" class="btn btn-light">Редактировать</button>
-                        </form>
-                        <form class="col" method="post" asp-action="DeleteNote" asp-route-id="@note.Id">
-                            <button type="submit" class="btn btn-light">Удалить</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        }
-
-        <div class="card note-item">
-            <a asp-action="GetNote" class="btn btn-success" asp-route-id="@Guid.NewGuid()">Создать заметку</a>
-        </div>
+        <vc:notes-catalog notes="Model.Notes" />
     </div>
 </section>
 

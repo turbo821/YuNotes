@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YuNotes", "YuNotes\YuNotes.csproj", "{B283E2D9-853F-4605-A9E9-9E4B8DD9457F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{48316FCA-CC71-4A18-B5AA-F2E00B846CCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{48316FCA-CC71-4A18-B5AA-F2E00B846CCB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B283E2D9-853F-4605-A9E9-9E4B8DD9457F} = {B283E2D9-853F-4605-A9E9-9E4B8DD9457F}
 	EndProjectSection

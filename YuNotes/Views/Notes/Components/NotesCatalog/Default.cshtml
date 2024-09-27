@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Note>
+
+
+@foreach (var note in Model)
+{
+    <div class="card note-item">
+        <div class="card-body">
+            <p class="card-text text-end">@note.Group?.Name</p>
+            <h2 class="card-title">@note.Title</h2>
+            <h6 class="card-subtitle mb-2 text-muted">Изменено: @note.EditDate.ToString("d MMM HH:mm")</h6>
+            <div class="row">
+                <form class="col" method="get" asp-action="GetNote" asp-route-id="@note.Id">
+                    <button type="submit" class="btn btn-light">Редактировать</button>
+                </form>
+                <form class="col" method="post" asp-action="DeleteNote" asp-route-id="@note.Id">
+                    <button type="submit" class="btn btn-light">Удалить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+<div class="card note-item">
+    <a asp-action="GetNote" class="btn btn-success" asp-route-id="@Guid.NewGuid()">Создать заметку</a>
+</div>
