@@ -10,6 +10,8 @@ namespace YuNotes.TagHelpers
     {
         public SortState Property { get; set; }
         public string? Action { get; set; }
+        public string? AspRouteGroupid { get; set; }
+        public string AspRouteSearch { get; set; }
 
         [ViewContext]
         [HtmlAttributeNotBound]
@@ -26,19 +28,12 @@ namespace YuNotes.TagHelpers
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "a";
 
-            Guid.TryParse(ViewContext.HttpContext.Request.Query["groupid"], out Guid groupId);
-            string? sortTitle = ViewContext.HttpContext.Request.Query["title"];
+            //Guid.TryParse(ViewContext.HttpContext.Request.Query["groupid"], out Guid groupId);
+            //string? searchTitle = ViewContext.HttpContext.Request.Query["searchtitle"];
 
-            string? url;
-            if (groupId != Guid.Empty)
-            {
-                url = urlHelper.Action(Action, new { sortOrder = Property, groupId = groupId, title = sortTitle });
-            }
-            else
-            {
-                url = urlHelper.Action(Action, new { sortOrder = Property, title = sortTitle });
-            }
-            output.Attributes.SetAttribute("href", url);    
+            string? url = urlHelper.Action(Action);
+
+            output.Attributes.SetAttribute("href", $"{url}?SortOrder={Property}&GroupId={AspRouteGroupid}&SearchTitle={AspRouteSearch}");    
         }
     }
 }

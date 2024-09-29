@@ -4,11 +4,11 @@ using YuNotes.ViewModels;
 
 namespace YuNotes.Components
 {
-    public class GroupMenuViewComponent : ViewComponent
+    public class SearchViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke(CatalogViewModel model)
         {
-            return View("GroupMenu", model);
+            return View("Search", model);
         }
     }
 }

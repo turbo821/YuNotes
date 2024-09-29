@@ -1,0 +1,11 @@
+﻿@model CatalogViewModel
+
+<form method="get" asp-action="Catalog" class="form-inline col-8 row search-form">
+    <input asp-for="SearchTitle" class="form-control search-input" placeholder="поиск по названию" />
+    <input type="hidden" name="GroupId" value="@Model.GroupModel.GroupId" />
+    <input type="hidden" name="SortOrder" value="@Model.SortViewModel.Current" />
+    <input type="submit" class="btn btn-success search-input" value="Найти" />
+</form>
+<form method="get" class="form-inline col-2">
+    <input type="submit" class="btn btn-success" value="Сброс" />
+</form>

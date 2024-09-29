@@ -1,0 +1,34 @@
+﻿@model CatalogViewModel
+
+<li class="list-group-item">
+    <span>All</span>
+    <span>
+        <a asp-action="Catalog" asp-route-SortOrder="@Model.SortViewModel.Current" 
+            asp-route-SearchTitle="@Model.SearchTitle">
+            <img class="find-img" src="~/img/icons8-find.svg" /></a>
+        <a>
+            <img class="delete-img-nonopacity" src="~/img/icons8-delete-30.png" />
+        </a>
+    </span>
+</li>
+@foreach (var group in Model.GroupModel.NoteGroups)
+{
+    <li class="list-group-item">
+        <span>@group.Name</span>
+        <span>
+            <a asp-action="Catalog" asp-route-GroupId="@group.Id"
+                asp-route-SortOrder="@Model.SortViewModel.Current" asp-route-SearchTitle="@Model.SearchTitle">
+                <img class="find-img" src="~/img/icons8-find.svg" />
+            </a>
+            <a asp-action="DeleteGroup" asp-route-id="@group.Id" >
+               <img class="delete-img" src="~/img/icons8-delete-30.png" />
+           </a>
+        </span>
+    </li>
+}
+<li class="list-group-item">
+    <form method="post" asp-action="AddGroup" asp-route-id="@Guid.NewGuid()" class="add-group">
+        <input type="text" asp-for="GroupModel.AddedGroup.Name" class="form-control col-12" />
+        <input type="submit" class="btn btn-success col-12" value="Добавить группу" />
+    </form>
+</li>

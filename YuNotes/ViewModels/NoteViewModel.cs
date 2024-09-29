@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using YuNotes.Models;
 
-namespace YuNotes.Models
+namespace YuNotes.ViewModels
 {
     public class NoteViewModel
     {

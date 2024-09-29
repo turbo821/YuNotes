@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using YuNotes.Models;
 using YuNotes.ViewModels;
 
 namespace YuNotes.Components
 {
-    public class GroupMenuViewComponent : ViewComponent
+    public class SortMenuViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke(CatalogViewModel model)
         {
-            return View("GroupMenu", model);
+            return View("SortMenu", model);
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using YuNotes.Contracts;
 using YuNotes.Data;
 using YuNotes.Models;
 using YuNotes.Repositories;
@@ -23,12 +24,12 @@ namespace YuNotes.Controllers
         [HttpGet]
         [Route("/")]
         [Route("notes")]
-        public async Task<IActionResult> Catalog(Guid? groupid, string? title, SortState sortOrder = SortState.EditDesc)
+        public async Task<IActionResult> Catalog(CatalogRequest request)
         {
-            IEnumerable<Note> notes = await repo.GetAllNotes(groupid, title);
+            IEnumerable<Note> notes = await repo.GetAllNotes(request.GroupId, request.SearchTitle);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
 
-            notes = sortOrder switch
+            notes = request.SortOrder switch
             {
                 SortState.TitleDesc => notes.OrderByDescending(n => n.Title),
                 SortState.EditAsc => notes.OrderBy(s => s.EditDate),
@@ -38,7 +39,9 @@ namespace YuNotes.Controllers
                 _ => notes.OrderBy(s => s.Title),
             };
 
-            CatalogViewModel viewModel = new CatalogViewModel() { Notes = notes, NoteGroups = groups, SortViewModel = new SortViewModel(sortOrder), Title = title };
+            CatalogViewModel viewModel = new() { Notes = notes, 
+                GroupModel = new() { NoteGroups = groups, GroupId = request.GroupId },
+                SortViewModel = new SortViewModel(request.SortOrder), SearchTitle = request.SearchTitle };
 
             return View(viewModel);
         }

@@ -1,0 +1,27 @@
+﻿@model CatalogViewModel
+
+<div class="dropdown col-2">
+    <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        Сортировка
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li>
+            <sort-notes action="Catalog" property="@Model.SortViewModel.TitleSort"
+                        asp-route-groupid="@Model.GroupModel.GroupId"
+                        asp-route-search="@Model.SearchTitle"
+                        class="dropdown-item">по названию</sort-notes>
+        </li>
+        <li>
+            <sort-notes action="Catalog" property="@Model.SortViewModel.EditTimeSort"
+                        asp-route-groupid="@Model.GroupModel.GroupId"
+                        asp-route-search="@Model.SearchTitle"
+                        class="dropdown-item">по дате изменения</sort-notes>
+        </li>
+        <li>
+            <sort-notes action="Catalog" property="@Model.SortViewModel.CreateTimeSort"
+                        asp-route-groupid="@Model.GroupModel.GroupId"
+                        asp-route-search="@Model.SearchTitle"
+                        class="dropdown-item">по дате создания</sort-notes>
+        </li>
+    </ul>
+</div>

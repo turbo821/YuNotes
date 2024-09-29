@@ -7,7 +7,7 @@ namespace YuNotes.Components
     {
         public IViewComponentResult Invoke(IEnumerable<Note> notes)
         {
-            return View(notes);
+            return View("NotesCatalog",notes);
         }
     }
 }
