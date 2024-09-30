@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
@@ -26,22 +27,29 @@ namespace YuNotes.Controllers
         [Route("notes")]
         public async Task<IActionResult> Catalog(CatalogRequest request)
         {
-            IEnumerable<Note> notes = await repo.GetAllNotes(request.GroupId, request.SearchTitle);
+            int pageSize = 3;
+
+            IEnumerable<Note> notesQuery = await repo.GetAllNotes(request.GroupId, request.SearchTitle);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
 
-            notes = request.SortOrder switch
+            notesQuery = request.SortOrder switch
             {
-                SortState.TitleDesc => notes.OrderByDescending(n => n.Title),
-                SortState.EditAsc => notes.OrderBy(s => s.EditDate),
-                SortState.EditDesc => notes.OrderByDescending(s => s.EditDate),
-                SortState.CreateAsc => notes.OrderBy(s => s.CreateDate),
-                SortState.CreateDesc => notes.OrderByDescending(s => s.CreateDate),
-                _ => notes.OrderBy(s => s.Title),
+                SortState.TitleDesc => notesQuery.OrderByDescending(n => n.Title),
+                SortState.EditAsc => notesQuery.OrderBy(s => s.EditDate),
+                SortState.EditDesc => notesQuery.OrderByDescending(s => s.EditDate),
+                SortState.CreateAsc => notesQuery.OrderBy(s => s.CreateDate),
+                SortState.CreateDesc => notesQuery.OrderByDescending(s => s.CreateDate),
+                _ => notesQuery.OrderBy(s => s.Title),
             };
+
+            var count = notesQuery.Count();
+            var notes = notesQuery.Skip((request.Page - 1) * pageSize).Take(pageSize);
 
             CatalogViewModel viewModel = new() { Notes = notes, 
                 GroupModel = new() { NoteGroups = groups, GroupId = request.GroupId },
-                SortViewModel = new SortViewModel(request.SortOrder), SearchTitle = request.SearchTitle };
+                SortViewModel = new SortViewModel(request.SortOrder),
+                PageViewModel = new PageViewModel(count, request.Page, pageSize),
+                SearchTitle = request.SearchTitle };
 
             return View(viewModel);
         }

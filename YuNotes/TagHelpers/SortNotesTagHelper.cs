@@ -28,9 +28,6 @@ namespace YuNotes.TagHelpers
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "a";
 
-            //Guid.TryParse(ViewContext.HttpContext.Request.Query["groupid"], out Guid groupId);
-            //string? searchTitle = ViewContext.HttpContext.Request.Query["searchtitle"];
-
             string? url = urlHelper.Action(Action);
 
             output.Attributes.SetAttribute("href", $"{url}?SortOrder={Property}&GroupId={AspRouteGroupid}&SearchTitle={AspRouteSearch}");    

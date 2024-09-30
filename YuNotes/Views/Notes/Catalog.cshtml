@@ -14,6 +14,10 @@
         <ul class="list-group">
             <vc:group-menu model="@Model" />
         </ul>
+        <page-link action="Catalog" page-model="@Model.PageViewModel"
+                   asp-route-groupid="@Model.GroupModel.GroupId"
+                   asp-route-sort="@Model.SortViewModel.Current"
+                   asp-route-search="@Model.SearchTitle"></page-link>
     </div>
 
     <div class="col-8 m-3 notes-items">
@@ -23,7 +27,7 @@
             <vc:sort-menu model="@Model" />
         </div>
 
-        <vc:notes-catalog notes="Model.Notes" />
+        <vc:notes-catalog notes="@Model.Notes" />
     </div>
 </section>
 

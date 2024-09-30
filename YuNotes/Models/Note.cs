@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
+﻿
 namespace YuNotes.Models
 {
     public class Note : BaseModel

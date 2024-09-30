@@ -7,7 +7,7 @@
         <div class="card-body">
             <p class="card-text text-end">@note.Group?.Name</p>
             <h2 class="card-title">@note.Title</h2>
-            <h6 class="card-subtitle mb-2 text-muted">Изменено: @note.EditDate.ToString("d MMM HH:mm")</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Изменено: @note.EditDate.ToString("HH:mm dd.MM.yyyy")</h6>
             <div class="row">
                 <form class="col" method="get" asp-action="GetNote" asp-route-id="@note.Id">
                     <button type="submit" class="btn btn-light">Редактировать</button>
