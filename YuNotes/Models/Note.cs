@@ -4,9 +4,9 @@ namespace YuNotes.Models
     public class Note : BaseModel
     {
         public string Title { get; set; } = string.Empty;
-        public string Text { get; set; } = string.Empty;
-        public DateTime CreateDate { get; set; }
-        public DateTime EditDate { get; set; }
+        public string? Text { get; set; } = string.Empty;
+        public DateTime? CreateDate { get; set; } = null;
+        public DateTime? EditDate { get; set; } = null;
         public Guid? GroupId { get; set; }
         public NoteGroup? Group { get; set; }
 

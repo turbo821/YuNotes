@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -27,8 +28,8 @@ namespace YuNotes.TagHelpers
         {
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             string? url = urlHelper.Action(Action);
-
             output.TagName = "div";
+            output.Attributes.SetAttribute("class", "pag-div");
             string innerContent = "";
 
                 for (int page = 1; page <= PageModel.TotalPages; page++)

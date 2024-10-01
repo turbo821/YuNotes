@@ -27,7 +27,7 @@ namespace YuNotes.Controllers
         [Route("notes")]
         public async Task<IActionResult> Catalog(CatalogRequest request)
         {
-            int pageSize = 3;
+            int pageSize = 4;
 
             IEnumerable<Note> notesQuery = await repo.GetAllNotes(request.GroupId, request.SearchTitle);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();

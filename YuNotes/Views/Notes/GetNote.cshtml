@@ -9,12 +9,15 @@
 <div class="row" style="width: 300px">
 
     <form class="col" asp-action="EditNote" method="post" asp-route-note.id="@Model.Note.Id">
-        <p>
-            Дата редактирования: @Model.Note.EditDate.ToString("HH:mm dd.MM.yyyy")
-        </p>
-        <p>
-            Дата создания: @Model.Note.CreateDate.ToString("HH:mm dd.MM.yyyy")
-        </p>
+        @if(Model.Note.EditDate is not null)
+        {
+            <p>
+                Дата редактирования: @Model.Note.EditDate?.ToString("HH:mm dd.MM.yyyy")
+            </p>
+            <p>
+                Дата создания: @Model.Note.CreateDate?.ToString("HH:mm dd.MM.yyyy")
+            </p>
+        }
         <p>
             <label asp-for="Note.Title">Заголовок</label><br />
             <input type="text" asp-for="Note.Title" />

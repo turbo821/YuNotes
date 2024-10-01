@@ -10,8 +10,8 @@
 
 <section class="row">
 
-    <div class="col-3 group-items">
-        <ul class="list-group">
+    <div class="col-3 group-items d-flex flex-column">
+        <ul class="list-group ">
             <vc:group-menu model="@Model" />
         </ul>
         <page-link action="Catalog" page-model="@Model.PageViewModel"
@@ -19,6 +19,7 @@
                    asp-route-sort="@Model.SortViewModel.Current"
                    asp-route-search="@Model.SearchTitle"></page-link>
     </div>
+
 
     <div class="col-8 m-3 notes-items">
         <h2 class="title">Твои заметки</h2>

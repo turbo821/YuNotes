@@ -2,7 +2,7 @@
 html {
     font-size: 14px;
     margin: 0 auto;
-    max-width: 1000px;
+    min-width: 1000px;
 }
 
 @media (min-width: 768px) {
@@ -22,7 +22,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: 0;
 }
 
 .list-group-item{
