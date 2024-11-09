@@ -1,7 +1,42 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@* generate AI *@
+@section Links {
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+}
 
-<div class="text-center">
-    <h1 class="display-4">Hello YuNotes</h1>
-</div>
+<section id="hero">
+    <h2>Создавайте заметки легко и быстро!</h2>
+    <p>Приложение YuNotes позволяет вам сохранять важные мысли, идеи и списки прямо на вашем устройстве.</p>
+    <a href="#download" class="btn">Скачать сейчас</a>
+</section>
+
+<section id="features">
+    <h2>Особенности</h2>
+    <ul>
+        <li>Интуитивно понятный интерфейс</li>
+        <li>Поддержка облачного хранения</li>
+        <li>Возможность организации заметок по папкам</li>
+        <li>Поддержка различных форматов (текст, изображения, аудио)</li>
+        <li>Синхронизация между устройствами</li>
+    </ul>
+</section>
+
+<section id="download">
+    <h2>Скачать YuNotes</h2>
+    <p>Доступно на всех основных платформах:</p>
+    <ul>
+        <li><a href="#">Скачать для iOS</a></li>
+        <li><a href="#">Скачать для Android</a></li>
+        <li><a href="#">Скачать для Windows</a></li>
+    </ul>
+</section>
+
+<section id="contact">
+    <h2>Контакты</h2>
+    <p>Есть вопросы? Свяжитесь с нами:</p>
+    <address>
+        <p>Email: <a href="mailto:support@yunotes.com">support@yunotes.com</a></p>
+    </address>
+</section>

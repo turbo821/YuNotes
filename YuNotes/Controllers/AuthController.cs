@@ -10,8 +10,14 @@ namespace YuNotes.Controllers
             return View();
         }
 
-        [Route("/registration")]
-        public IActionResult Registration()
+        [Route("/signup")]
+        public IActionResult SignUp()
+        {
+            return View();
+        }
+
+        [Route("/inputemail")]
+        public IActionResult InputEmail()
         {
             return View();
         }

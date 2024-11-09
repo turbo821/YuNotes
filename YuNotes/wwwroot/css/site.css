@@ -1,3 +1,22 @@
+:root {
+    --body-bg: #c1bdba;
+    --grey: #808080;
+    --form-bg: #13232f;
+    --white: #ffffff;
+    --main: #1ab188;
+    --gray-light: #a0b3b0;
+    --gray: #ddd;
+    --black: #101010;
+    --thin: 300;
+    --normal: 400;
+    --bold: 600;
+    --br: 4px;
+    --red-del: #f27d7d;
+}
+
+main {
+    min-height: 800px;
+}
 
 html {
     font-size: 14px;
@@ -10,6 +29,10 @@ html {
         font-size: 16px;
         
     }
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {

@@ -1,0 +1,86 @@
+﻿.node-sec {
+    background: rgba(var(--form-bg),.9);
+    padding: 40px;
+    max-width: 600px;
+    margin: 40px auto;
+    border-radius: var(--br);
+    box-shadow: 0 4px 10px 4px rgba(var(--form-bg),.3);
+}
+
+.node-sec h1 {
+    text-align: center;
+    color: var(--black);
+    font-weight: var(--thin);
+    margin: 0 0 40px;
+}
+.node-date {
+    display: block;
+    text-decoration: none;
+    padding: 15px;
+    background: rgba(var(--gray-light),.25);
+    color: var(--gray-light);
+    font-size: 15px;
+    float: left;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.node-div {
+    margin: 0 auto;
+}
+
+    .node-div input, .node-div textarea, .node-div select {
+        font-size: 22px;
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 5px 10px;
+        border: 1px solid var(--gray-light);
+        color: var(--black);
+        border-radius: 0;
+        transition: border-color .25s ease, box-shadow .25s ease;
+    }
+
+.node-div input:focus, .form textarea:focus {
+    outline: 0;
+    border-color: var(--main);
+}
+
+.node-div textarea {
+    border: 2px solid var(--gray-light);
+    resize: vertical;
+}
+
+.field-wrap {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.node-button {
+    border: 0;
+    outline: none;
+    border-radius: 0;
+    padding: 15px 0;
+    font-size: 2rem;
+    font-weight: var(--bold);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    background: var(--main);
+    color: var(--white);
+    transition: all.5s ease;
+    -webkit-appearance: none;
+}
+
+.node-button:hover, .node-button:focus {
+    background: var(--white);
+    color: var(--main);
+}
+
+.node-button-del {
+    background: var(--red-del);
+}
+    .node-button-del:hover, .node-button-del:focus {
+        background: var(--white);
+        color: var(--red-del);
+    }

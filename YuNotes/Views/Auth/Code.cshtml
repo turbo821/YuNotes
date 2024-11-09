@@ -1,3 +1,38 @@
 ﻿@{
     ViewData["Title"] = "Code";
 }
+@section Links {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+}
+<div class="form">
+
+    <div id="code">
+        <h1>Восстановление пароля</h1>
+        <form action="/" method="post">
+
+            <div class="field-wrap">
+                <label>
+                    Введите код подтверждения, высланный на нашу почту<span class="req">*</span>
+                </label>
+                <input type="text" required autocomplete="off" />
+            </div>
+
+            <div class="field-wrap">
+                <label>
+                    Новый пароль<span class="req">*</span>
+                </label>
+                <input type="password" required autocomplete="off" />
+            </div>
+
+            <div class="field-wrap">
+                <label>
+                    Повторите пароль<span class="req">*</span>
+                </label>
+                <input type="password" required autocomplete="off" />
+            </div>
+
+            <button type="submit" class="button button-block">Поменять пароль</button>
+        </form>
+    </div>
+
+</div>

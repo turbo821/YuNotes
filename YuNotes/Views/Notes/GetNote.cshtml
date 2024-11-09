@@ -4,37 +4,47 @@
 
 @model NoteViewModel;
 
+@section Links {
+    <link rel="stylesheet" href="~/css/node.css" asp-append-version="true" />
+}
 
-<h2>Заметка</h2>
-<div class="row" style="width: 300px">
+<section class="node-sec">
+    <h1>Заметка</h1>
+    <div class="node-div">
 
-    <form class="col" asp-action="EditNote" method="post" asp-route-note.id="@Model.Note.Id">
-        @if(Model.Note.EditDate is not null)
-        {
-            <p>
-                Дата редактирования: @Model.Note.EditDate?.ToString("HH:mm dd.MM.yyyy")
-            </p>
-            <p>
-                Дата создания: @Model.Note.CreateDate?.ToString("HH:mm dd.MM.yyyy")
-            </p>
-        }
-        <p>
-            <label asp-for="Note.Title">Заголовок</label><br />
-            <input type="text" asp-for="Note.Title" />
-        </p>
-        <p>
-            <label asp-for="Note.Text">Текст</label><br />
-            <textarea asp-for="Note.Text">@Model.Note.Text</textarea>
-        </p>
-        <p>
-            <label asp-for="Note.GroupId">Группы</label><br />
-            <select asp-for="Note.GroupId" asp-items="@Model.NoteGroups"></select>
-        </p>
-        <p>
-            <input type="submit" value="Сохранить" />
-        </p>
-    </form>    
-    <form class="col" method="post" asp-action="DeleteNote" asp-route-id="@Model.Note.Id">
-        <input type="submit" value="Удалить" />
-    </form>
-</div>
+        <form asp-action="EditNote" method="post" asp-route-note.id="@Model.Note.Id">
+            @if (Model.Note.EditDate is not null)
+            {
+                <p class="node-date">
+                    Изменена: @Model.Note.EditDate?.ToString("HH:mm dd.MM.yyyy")
+                </p>
+                <p class="node-date">
+                    Создана: @Model.Note.CreateDate?.ToString("HH:mm dd.MM.yyyy")
+                </p>
+            }
+
+            <div class="field-wrap">
+                <label asp-for="Note.Title">Заголовок</label>
+                <input type="text" asp-for="Note.Title" />
+            </div>
+
+            <div class="field-wrap">
+                <label asp-for="Note.Text">Текст</label>
+                <textarea asp-for="Note.Text">@Model.Note.Text</textarea>
+            </div>
+
+            <div class="field-wrap">
+                <label asp-for="Note.GroupId">Группы</label>
+                <select asp-for="Note.GroupId" asp-items="@Model.NoteGroups"></select>
+            </div>
+
+            <div class="field-wrap">
+                <input class="node-button" type="submit" value="Сохранить" />
+            </div>
+        </form>
+        <form method="post" asp-action="DeleteNote" asp-route-id="@Model.Note.Id">
+            <input class="node-button node-button-del" type="submit" value="Удалить" />
+        </form>
+    </div>
+</section>
+
