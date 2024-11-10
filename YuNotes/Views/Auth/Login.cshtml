@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Login";
 }
-
+@model YuNotes.ViewModels.LogInViewModel
 @section Links {
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 }
@@ -15,20 +15,22 @@
 
     <div id="login">
         <h1>Добро пожаловать!</h1>
-        <form action="/" method="post">
+        <form asp-action="Login" asp-antiforgery="true" method="post">
 
             <div class="field-wrap">
-                <label>
+                <label asp-for="Email">
                     Электронная почта<span class="req">*</span>
                 </label>
-                <input type="email" required autocomplete="off" />
+                <input autocomplete="off" asp-for="Email" />
+                <span asp-validation-for="Email" />
             </div>
 
             <div class="field-wrap">
-                <label>
+                <label asp-for="Password">
                     Пароль<span class="req">*</span>
                 </label>
-                <input type="password" required autocomplete="off" />
+                <input autocomplete="off" asp-for="Password" />
+                <span asp-validation-for="Password" />
             </div>
 
             <p class="forgot"><a asp-action="InputEmail">Забыли пароль?</a></p>
@@ -38,3 +40,9 @@
     </div>
 
 </section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

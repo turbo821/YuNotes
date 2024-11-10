@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Sign Up";
 }
+@model YuNotes.ViewModels.SignInViewModel;
 
 @section Links {
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
@@ -14,33 +15,37 @@
 
     <div id="signup">
         <h1>Регистрация</h1>
-        <form action="/" method="post">
+        <form asp-action="SignUp" method="post">
             <div class="top-row">
                 <div class="field-wrap">
-                    <label>
+                    <label asp-for="Nickname">
                         Псевдоним<span class="req">*</span>
                     </label>
-                    <input type="text" required autocomplete="off" />
+                    <input type="text" autocomplete="off" asp-for="Nickname" />
+                    <span asp-validation-for="Nickname" />
                 </div>
 
             </div>
             <div class="field-wrap">
-                <label>
+                <label asp-for="Email">
                     Электронная почта<span class="req">*</span>
                 </label>
-                <input type="email" required autocomplete="off" />
+                <input autocomplete="off" asp-for="Email"/>
+                <span asp-validation-for="Email" />
             </div>
             <div class="field-wrap">
-                <label>
+                <label asp-for="Password">
                     Пароль<span class="req">*</span>
                 </label>
-                <input type="password" required autocomplete="off" />
+                <input autocomplete="off" asp-for="Password"/>
+                <span asp-validation-for="Password" />
             </div>
             <div class="field-wrap">
-                <label>
+                <label asp-for="PasswordConfirm">
                     Повторите пароль<span class="req">*</span>
                 </label>
-                <input type="password" required autocomplete="off" />
+                <input autocomplete="off" asp-for="PasswordConfirm"/>
+                <span asp-validation-for="PasswordConfirm" />
             </div>
 
             <button type="submit" class="button button-block">Начать</button>
@@ -48,3 +53,9 @@
     </div>
 
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
