@@ -7,15 +7,15 @@ namespace YuNotes.ViewModels
     {
         [Required]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "Длина от 3 до 30 символов")]
-        public string? Nickname { get; set; }
+        public string Nickname { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]
-        public string? Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]
-        public string? Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]

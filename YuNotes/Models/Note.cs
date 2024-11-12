@@ -9,6 +9,8 @@ namespace YuNotes.Models
         public DateTime? EditDate { get; set; } = null;
         public Guid? GroupId { get; set; }
         public NoteGroup? Group { get; set; }
+        public Guid UserId { get; set; }
+        public User User { get; set; } = null!;
 
         public static bool operator ==(Note left, Note right)
         {

@@ -3,7 +3,7 @@ using YuNotes.Models;
 
 namespace YuNotes.Repositories
 {
-    public interface IRepository
+    public interface INotesRepository
     {
         Task<IEnumerable<Note>> GetAllNotes(Guid? groupId, string? title);
         Task<Note> GetNote(Guid id);

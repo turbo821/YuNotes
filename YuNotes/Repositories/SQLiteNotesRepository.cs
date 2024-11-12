@@ -7,11 +7,11 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace YuNotes.Repositories
 {
-    public class SQLiteRepository : IRepository
+    public class SQLiteNotesRepository : INotesRepository
     {
         NotesContext db;
 
-        public SQLiteRepository(NotesContext context)
+        public SQLiteNotesRepository(NotesContext context)
         {
             db = context;
         }

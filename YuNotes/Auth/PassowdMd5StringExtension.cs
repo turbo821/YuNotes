@@ -1,15 +1,15 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace FromboardDelivery.Extensions
+namespace YuNotes.Auth
 {
-    public static class PassowdStringExtension
+    public static class PassowdMd5StringExtension
     {
         public static string Encrypt(this string str)
         {
-            SHA256 sha256 = SHA256.Create();
+            MD5 md5 = MD5.Create();
             byte[] hashValue;
-            hashValue = sha256.ComputeHash(Encoding.UTF8.GetBytes(str));
+            hashValue = md5.ComputeHash(Encoding.UTF8.GetBytes(str));
 
             string hash = Convert.ToBase64String(hashValue);
             return hash;

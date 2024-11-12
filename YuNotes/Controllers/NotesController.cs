@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using YuNotes.Contracts;
 using YuNotes.Data;
@@ -12,21 +14,25 @@ using YuNotes.ViewModels;
 
 namespace YuNotes.Controllers
 {
+    [Authorize]
     public class NotesController : Controller
     {
-        IRepository repo;
+        INotesRepository repo;
 
-        public NotesController(IRepository context)
+        public NotesController(INotesRepository context)
         {
             repo = context;
         }
 
 
         [HttpGet]
-        [Route("/")]
         [Route("notes")]
         public async Task<IActionResult> Catalog(CatalogRequest request)
         {
+            var user = HttpContext.User;
+            var claims = user.Claims;
+            var userEmail = user.FindFirst(ClaimTypes.Email);
+
             int pageSize = 4;
 
             IEnumerable<Note> notesQuery = await repo.GetAllNotes(request.GroupId, request.SearchTitle);

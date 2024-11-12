@@ -3,16 +3,11 @@ using YuNotes.Models;
 
 namespace YuNotes.Data
 {
-    public class NotesContext : DbContext
+    public class NotesContext(DbContextOptions options) : DbContext(options)
     {
         public DbSet<Note> Notes { get; set; } = null!;
         public DbSet<NoteGroup> Groups { get; set; } = null!;
-
-        public NotesContext(DbContextOptions options)
-            :base(options)
-        {
-            Database.EnsureCreated();
-        }
+        public DbSet<User> Users { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +28,12 @@ namespace YuNotes.Data
                 .HasForeignKey(n => n.GroupId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Note>()
+                .HasOne(n => n.User)
+                .WithMany(u => u.Notes)
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<NoteGroup>()
                 .HasKey(g => g.Id);
 
@@ -42,6 +43,15 @@ namespace YuNotes.Data
                 .HasForeignKey(n => n.GroupId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Notes)
+                .WithOne(n => n.User)
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
         }
     }
 }

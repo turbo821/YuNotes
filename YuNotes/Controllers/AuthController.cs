@@ -1,10 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using YuNotes.Auth;
+using YuNotes.Models;
+using YuNotes.Repositories;
 using YuNotes.ViewModels;
 
 namespace YuNotes.Controllers
 {
     public class AuthController : Controller
     {
+        IUsersReposiroty repo;
+        public AuthController(IUsersReposiroty repo)
+        {
+            this.repo = repo;
+        }
+
         [HttpGet]
         [Route("/login")]
         public IActionResult Login()
@@ -14,10 +29,29 @@ namespace YuNotes.Controllers
 
         [HttpPost]
         [Route("/login")]
-        public async Task<IActionResult> LoginAsync(LogInViewModel request)
+        public async Task<IActionResult> LoginAsync(string? returnUrl, LogInViewModel request)
         {
-            Console.WriteLine($"{request.Email} -- {request.Password}");
-            return RedirectToAction("Catalog", "Notes");
+            if (request.Email != null && request.Password != null && await repo.LoginUser(request.Email, request.Password))
+            {
+                var claims = new List<Claim> { new Claim(ClaimTypes.Email, request.Email) };
+                
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+                
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                return Redirect(returnUrl ?? "/");
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
+        [HttpGet]
+        [Route("/logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
@@ -31,7 +65,15 @@ namespace YuNotes.Controllers
         [Route("/signup")]
         public async Task<IActionResult> SignUpAsync(SignInViewModel model)
         {
-            Console.WriteLine("Hello");
+            if (repo.CheckNickname(model.Nickname) || model.Nickname == null)
+            {
+                return RedirectToAction("SignUp");
+            }
+            else
+            {
+                User user = new User { Nickname = model.Nickname!, Email = model.Email, Password = model.Password.Encrypt() };
+                await repo.SignUpUser(user);
+            }
             return RedirectToAction("Login");
         }
 
