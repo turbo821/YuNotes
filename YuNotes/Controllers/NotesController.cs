@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using YuNotes.Contracts;
@@ -29,13 +30,12 @@ namespace YuNotes.Controllers
         [Route("notes")]
         public async Task<IActionResult> Catalog(CatalogRequest request)
         {
-            var user = HttpContext.User;
-            var claims = user.Claims;
-            var userEmail = user.FindFirst(ClaimTypes.Email);
-
             int pageSize = 4;
+            var userContext = HttpContext.User;
+            var userEmail = userContext.FindFirstValue(ClaimTypes.Email)!;
+            User user = await repo.GetUser(userEmail);
 
-            IEnumerable<Note> notesQuery = await repo.GetAllNotes(request.GroupId, request.SearchTitle);
+            IEnumerable<Note> notesQuery = await repo.GetAllNotes(user, request.GroupId, request.SearchTitle);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
 
             notesQuery = request.SortOrder switch
@@ -64,7 +64,11 @@ namespace YuNotes.Controllers
         [Route("note/{id:guid}")]
         public async Task<IActionResult> GetNote(Guid id)
         {
-            Note note = await repo.GetNote(id);
+            var userContext = HttpContext.User;
+            var userEmail = userContext.FindFirstValue(ClaimTypes.Email)!;
+            User user = await repo.GetUser(userEmail);
+
+            Note note = await repo.GetNote(id, user);
             IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
 
             SelectList noteGroups = new SelectList(groups, "Id", "Name");
@@ -76,7 +80,11 @@ namespace YuNotes.Controllers
         [Route("note/delete")]
         public async Task<IActionResult> DeleteNote(Guid id)
         {
-            await repo.DeleteNote(id);
+            var userContext = HttpContext.User;
+            var userEmail = userContext.FindFirstValue(ClaimTypes.Email)!;
+            User user = await repo.GetUser(userEmail);
+
+            await repo.DeleteNote(id, user);
 
             return RedirectToAction("Catalog");
         }
@@ -85,8 +93,12 @@ namespace YuNotes.Controllers
         [Route("note/edit")]
         public async Task<IActionResult> EditNote(NoteViewModel model)
         {
+            var userContext = HttpContext.User;
+            var userEmail = userContext.FindFirstValue(ClaimTypes.Email)!;
+            User user = await repo.GetUser(userEmail);
+
             Note note = model.Note;
-            await repo.EditNote(note);
+            await repo.EditNote(note, user);
 
             return RedirectToAction("Catalog");
         }

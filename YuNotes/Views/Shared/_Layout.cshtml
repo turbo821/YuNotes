@@ -31,12 +31,22 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav d-flex">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Login" asp-controller="Auth">Вход</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="SignUp" asp-controller="Auth">Регистрация</a>
-                        </li>
+                        @if(!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Login" asp-controller="Auth">Вход</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="SignUp" asp-controller="Auth">Регистрация</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Logout" asp-controller="Auth">Выход</a>
+                            </li>
+                        }
+
                     </ul>
                         
                 </div>

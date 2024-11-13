@@ -17,7 +17,8 @@ namespace YuNotes.Models
             if (left.Id == right.Id
                 && left.Title == right.Title
                 && left.Text == right.Text
-                && left.GroupId == right.GroupId)
+                && left.GroupId == right.GroupId
+                && left.User.Id == right.User.Id)
             {
                 return true;
             }
@@ -29,7 +30,8 @@ namespace YuNotes.Models
             if (left.Id == right.Id
                 && left.Title == right.Title
                 && left.EditDate == right.EditDate
-                && left.CreateDate == right.CreateDate)
+                && left.CreateDate == right.CreateDate
+                && left.User.Id == right.User.Id)
             {
                 return false;
             }

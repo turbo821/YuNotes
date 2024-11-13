@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YuNotes.Data;
 
@@ -10,9 +11,11 @@ using YuNotes.Data;
 namespace YuNotes.Migrations
 {
     [DbContext(typeof(NotesContext))]
-    partial class NotesContextModelSnapshot : ModelSnapshot
+    [Migration("20241113211647_EmailIndex")]
+    partial class EmailIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -68,22 +71,22 @@ namespace YuNotes.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ce5834ea-d559-450b-b02f-1223ad706528"),
+                            Id = new Guid("fc0fb84f-fb3f-4ee1-aa2b-588a0f632973"),
                             Name = "Work"
                         },
                         new
                         {
-                            Id = new Guid("7a8aca68-928b-45ac-9eef-e86432f0faa3"),
+                            Id = new Guid("8b9b91d2-7458-4c47-8cf3-68e0d1fb7b1d"),
                             Name = "Life"
                         },
                         new
                         {
-                            Id = new Guid("4daf417e-ebbb-477c-a914-796df78bc01a"),
+                            Id = new Guid("2158b579-7fd7-41b3-98b7-3266283ce82e"),
                             Name = "Personal"
                         },
                         new
                         {
-                            Id = new Guid("a3150378-9ae2-4476-94fa-146f18fa8b93"),
+                            Id = new Guid("4f42018a-b2b3-467b-8c26-50127d12a421"),
                             Name = "Travel"
                         });
                 });
@@ -108,11 +111,7 @@ namespace YuNotes.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Nickname")
-                        .IsUnique();
+                    b.HasIndex("Email");
 
                     b.ToTable("Users");
                 });
