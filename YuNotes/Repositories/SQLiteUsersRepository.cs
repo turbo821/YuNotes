@@ -2,6 +2,7 @@
 using YuNotes.Auth;
 using YuNotes.Data;
 using YuNotes.Models;
+using YuNotes.Repositories.Interfaces;
 
 namespace YuNotes.Repositories
 {
@@ -14,7 +15,7 @@ namespace YuNotes.Repositories
             db = context;
         }
 
-        public bool CheckNickname(string nickname)
+        public bool RetryNickname(string nickname)
         {
             return db.Users.Any(u => u.Nickname == nickname);
         }

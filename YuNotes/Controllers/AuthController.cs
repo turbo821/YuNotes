@@ -1,23 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using YuNotes.Auth;
-using YuNotes.Models;
-using YuNotes.Repositories;
 using YuNotes.ViewModels;
+using YuNotes.Services.Interfaces;
 
 namespace YuNotes.Controllers
 {
     public class AuthController : Controller
     {
-        IUsersReposiroty repo;
-        public AuthController(IUsersReposiroty repo)
+        private IAuthService _service;
+
+        public AuthController(IAuthService service)
         {
-            this.repo = repo;
+            _service = service;
         }
 
         [HttpGet]
@@ -31,12 +27,10 @@ namespace YuNotes.Controllers
         [Route("/login")]
         public async Task<IActionResult> LoginAsync(string? returnUrl, LogInViewModel request)
         {
-            if (request.Email != null && request.Password != null && await repo.LoginUser(request.Email, request.Password))
+            if (await _service.CheckLogin(request))
             {
-                var claims = new List<Claim> { new Claim(ClaimTypes.Email, request.Email) };
-                
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-                
+                ClaimsIdentity claimsIdentity = _service.GetClaimsIdentity(request);
+
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return Redirect(returnUrl ?? "/");
             }
@@ -65,14 +59,13 @@ namespace YuNotes.Controllers
         [Route("/signup")]
         public async Task<IActionResult> SignUpAsync(SignInViewModel model)
         {
-            if (repo.CheckNickname(model.Nickname) || model.Nickname == null)
+            if (_service.NicknameIsRetryOrNull(model.Nickname))
             {
                 return RedirectToAction("SignUp");
             }
             else
             {
-                User user = new User { Nickname = model.Nickname!, Email = model.Email, Password = model.Password.Encrypt() };
-                await repo.SignUpUser(user);
+                await _service.SignUpUser(model);
             }
             return RedirectToAction("Login");
         }

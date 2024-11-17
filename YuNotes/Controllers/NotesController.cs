@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using YuNotes.Contracts;
-using YuNotes.Data;
 using YuNotes.Models;
-using YuNotes.Repositories;
+using YuNotes.Repositories.Interfaces;
+using YuNotes.Services.Interfaces;
 using YuNotes.ViewModels;
 
 namespace YuNotes.Controllers
@@ -18,44 +14,20 @@ namespace YuNotes.Controllers
     [Authorize]
     public class NotesController : Controller
     {
-        INotesRepository repo;
+        INotesService _service;
 
-        public NotesController(INotesRepository context)
+        public NotesController(INotesService service)
         {
-            repo = context;
+            _service = service;
         }
-
 
         [HttpGet]
         [Route("notes")]
         public async Task<IActionResult> Catalog(CatalogRequest request)
         {
-            int pageSize = 4;
-            var userContext = HttpContext.User;
-            var userEmail = userContext.FindFirstValue(ClaimTypes.Email)!;
-            User user = await repo.GetUser(userEmail);
+            var userEmail = Email;
 
-            IEnumerable<Note> notesQuery = await repo.GetAllNotes(user, request.GroupId, request.SearchTitle);
-            IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
-
-            notesQuery = request.SortOrder switch
-            {
-                SortState.TitleDesc => notesQuery.OrderByDescending(n => n.Title),
-                SortState.EditAsc => notesQuery.OrderBy(s => s.EditDate),
-                SortState.EditDesc => notesQuery.OrderByDescending(s => s.EditDate),
-                SortState.CreateAsc => notesQuery.OrderBy(s => s.CreateDate),
-                SortState.CreateDesc => notesQuery.OrderByDescending(s => s.CreateDate),
-                _ => notesQuery.OrderBy(s => s.Title),
-            };
-
-            var count = notesQuery.Count();
-            var notes = notesQuery.Skip((request.Page - 1) * pageSize).Take(pageSize);
-
-            CatalogViewModel viewModel = new() { Notes = notes, 
-                GroupModel = new() { NoteGroups = groups, GroupId = request.GroupId },
-                SortViewModel = new SortViewModel(request.SortOrder),
-                PageViewModel = new PageViewModel(count, request.Page, pageSize),
-                SearchTitle = request.SearchTitle };
+            var viewModel = await _service.GetPaginationNotes(request, userEmail);
 
             return View(viewModel);
         }
@@ -64,27 +36,20 @@ namespace YuNotes.Controllers
         [Route("note/{id:guid}")]
         public async Task<IActionResult> GetNote(Guid id)
         {
-            var userContext = HttpContext.User;
-            var userEmail = userContext.FindFirstValue(ClaimTypes.Email)!;
-            User user = await repo.GetUser(userEmail);
+            var userEmail = Email;
 
-            Note note = await repo.GetNote(id, user);
-            IEnumerable<NoteGroup> groups = await repo.GetAllGroups();
+            var viewModel = await _service.GetNote(id, userEmail);
 
-            SelectList noteGroups = new SelectList(groups, "Id", "Name");
-
-            return View(new NoteViewModel() { Note = note, NoteGroups = noteGroups });
+            return View(viewModel);
         }
 
         [HttpPost]
         [Route("note/delete")]
         public async Task<IActionResult> DeleteNote(Guid id)
         {
-            var userContext = HttpContext.User;
-            var userEmail = userContext.FindFirstValue(ClaimTypes.Email)!;
-            User user = await repo.GetUser(userEmail);
+            var userEmail = Email;
 
-            await repo.DeleteNote(id, user);
+            await _service.DeleteNote(id, userEmail);
 
             return RedirectToAction("Catalog");
         }
@@ -93,12 +58,10 @@ namespace YuNotes.Controllers
         [Route("note/edit")]
         public async Task<IActionResult> EditNote(NoteViewModel model)
         {
-            var userContext = HttpContext.User;
-            var userEmail = userContext.FindFirstValue(ClaimTypes.Email)!;
-            User user = await repo.GetUser(userEmail);
-
+            var userEmail = Email;
             Note note = model.Note;
-            await repo.EditNote(note, user);
+
+            await _service.EditNote(note, userEmail);
 
             return RedirectToAction("Catalog");
         }
@@ -107,10 +70,11 @@ namespace YuNotes.Controllers
         [Route("note/addgroup")]
         public async Task<IActionResult> AddGroup(NoteGroup addedGroup)
         {
-            if(addedGroup.Name is null)
-                RedirectToAction("Catalog");
-
-            await repo.AddGroup(addedGroup);
+            if (addedGroup.Name is null || addedGroup.Name == string.Empty || Regex.IsMatch(addedGroup.Name, @"[^\w\s]"))
+                return RedirectToAction("Catalog");
+            
+            var userEmail = Email;
+            await _service.AddGroup(addedGroup, userEmail);
             return RedirectToAction("Catalog");
         }
 
@@ -118,8 +82,11 @@ namespace YuNotes.Controllers
         [Route("note/deletegroup")]
         public async Task<IActionResult> DeleteGroup(Guid id)
         {
-            await repo.DeleteGroup(id);
+            var userEmail = Email;
+            await _service.DeleteGroup(id, userEmail);
             return RedirectToAction("Catalog");
         }
+
+        private string Email => HttpContext.User.FindFirstValue(ClaimTypes.Email)!;
     }
 }

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using YuNotes.Models;
 
 namespace YuNotes.Controllers
 {

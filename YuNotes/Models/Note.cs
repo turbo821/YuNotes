@@ -1,5 +1,4 @@
-﻿
-namespace YuNotes.Models
+﻿namespace YuNotes.Models
 {
     public class Note : BaseModel
     {

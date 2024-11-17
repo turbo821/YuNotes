@@ -3,7 +3,7 @@ using System.Text;
 
 namespace YuNotes.Auth
 {
-    public static class PassowdMd5StringExtension
+    public static class PasswordMd5StringExtension
     {
         public static string Encrypt(this string str)
         {

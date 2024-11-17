@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using YuNotes.Data;
 using YuNotes.Repositories;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using YuNotes.Auth;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using YuNotes.Repositories.Interfaces;
+using YuNotes.Services.Interfaces;
+using YuNotes.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +12,11 @@ string connection = builder.Configuration.GetConnectionString("DefaultConnection
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<NotesContext>(options => options.UseSqlite(connection));
+
 builder.Services.AddScoped<INotesRepository, SQLiteNotesRepository>();
 builder.Services.AddScoped<IUsersReposiroty, SQLiteUsersRepository>();
+builder.Services.AddScoped<INotesService, NotesService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => options.LoginPath = "/login");

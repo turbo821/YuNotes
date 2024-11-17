@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using YuNotes.Models;
 using YuNotes.ViewModels;
 
 namespace YuNotes.Components

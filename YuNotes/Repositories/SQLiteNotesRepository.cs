@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using YuNotes.Data;
 using YuNotes.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using YuNotes.Repositories.Interfaces;
 
 namespace YuNotes.Repositories
 {
@@ -108,22 +106,24 @@ namespace YuNotes.Repositories
             await db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<NoteGroup>> GetAllGroups()
+        public async Task<IEnumerable<NoteGroup>> GetAllGroups(User user)
         {
-            return await db.Groups.ToListAsync();
+            return await db.Groups.Where(g => g.User == user).ToListAsync();
         }
 
-        public async Task AddGroup(NoteGroup addedGroup)
+        public async Task AddGroup(NoteGroup addedGroup, string userEmail)
         {
+            User user = db.Users.FirstOrDefault(u => u.Email == userEmail)!;
+            addedGroup.User = user;
             db.Groups.Add(addedGroup);
             await db.SaveChangesAsync();
         }
 
-        public async Task DeleteGroup(Guid id)
+        public async Task DeleteGroup(Guid id, string userEmail)
         {
-
             NoteGroup? group = await db.Groups.FirstOrDefaultAsync(g => g.Id == id);
-            if (group != null)
+            bool HasUser = db.Users.Any(u => u.Email == userEmail);
+            if (group != null && HasUser)
             {
                 db.Groups.Remove(group);
                 await db.SaveChangesAsync();
