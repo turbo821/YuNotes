@@ -22,7 +22,7 @@
                         Псевдоним<span class="req">*</span>
                     </label>
                     <input type="text" autocomplete="off" asp-for="Nickname" />
-                    <span asp-validation-for="Nickname" />
+                    <span asp-validation-for="Nickname" ></span>
                 </div>
 
             </div>
@@ -31,7 +31,7 @@
                     Электронная почта<span class="req">*</span>
                 </label>
                 <input autocomplete="off" asp-for="Email"/>
-                <span asp-validation-for="Email" />
+                <span asp-validation-for="Email"></span>
             </div>
             <div class="field-wrap">
                 <label asp-for="Password">
@@ -47,6 +47,7 @@
                 <input autocomplete="off" asp-for="PasswordConfirm"/>
                 <span asp-validation-for="PasswordConfirm" />
             </div>
+            <div asp-validation-summary="ModelOnly"></div>
 
             <button type="submit" class="button button-block">Начать</button>
         </form>

@@ -18,8 +18,9 @@ namespace YuNotes.Controllers
 
         [HttpGet]
         [Route("/login")]
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -36,7 +37,8 @@ namespace YuNotes.Controllers
             }
             else
             {
-                return RedirectToAction("Login");
+                ModelState.AddModelError("", "Почта или пароль неверны!");
+                return View(request);
             }
         }
 
@@ -61,13 +63,18 @@ namespace YuNotes.Controllers
         {
             if (_service.NicknameIsRetryOrNull(model.Nickname))
             {
-                return RedirectToAction("SignUp");
+                ModelState.AddModelError("Nickname", "Аккаунт с таким ником уже создан");
             }
-            else
+            else if(_service.EmailIsRetryOrNull(model.Email))
+            {
+                ModelState.AddModelError("Email", "Аккаунт с такой почтой уже создан");
+            }
+            else if(ModelState.IsValid)
             {
                 await _service.SignUpUser(model);
+                return RedirectToAction("Login");
             }
-            return RedirectToAction("Login");
+            return View(model);
         }
 
         [Route("/inputemail")]

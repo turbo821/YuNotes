@@ -54,7 +54,7 @@ namespace YuNotes.Services
             Note note = await _repo.GetNote(id, user);
             IEnumerable<NoteGroup> groups = await _repo.GetAllGroups(user);
 
-            SelectList noteGroups = new SelectList(groups, "Id", "Name");
+            SelectList noteGroups = new SelectList(groups.OrderBy(g => g.Name), "Id", "Name");
 
             return new NoteViewModel() { Note = note, NoteGroups = noteGroups };
         }
@@ -80,6 +80,5 @@ namespace YuNotes.Services
         {
             await _repo.DeleteGroup(id, userEmail);
         }
-
     }
 }

@@ -34,15 +34,19 @@ namespace YuNotes.Services
         {
             return _repo.RetryNickname(nickname) || nickname == null;
         }
-
+        public bool EmailIsRetryOrNull(string email)
+        {
+            return _repo.RetryEmail(email) || email == null;
+        }
         public async Task SignUpUser(SignInViewModel data)
         {
             List<NoteGroup> defaultGroups = new List<NoteGroup>()
             {
-                new NoteGroup{ Id = Guid.NewGuid(), Name = "Work" },
-                new NoteGroup { Id = Guid.NewGuid(), Name = "Life" },
-                new NoteGroup { Id = Guid.NewGuid(), Name = "Personal" },
-                new NoteGroup { Id = Guid.NewGuid(), Name = "Travel" }
+                new NoteGroup{ Id = Guid.NewGuid(), Name = "Личные" },
+                new NoteGroup { Id = Guid.NewGuid(), Name = "Работа" },
+                new NoteGroup { Id = Guid.NewGuid(), Name = "Путешествия" },
+                new NoteGroup { Id = Guid.NewGuid(), Name = "Жизнь" },
+                new NoteGroup{ Id = Guid.NewGuid(), Name = "Без категории" }
             };
 
             User user = new User 

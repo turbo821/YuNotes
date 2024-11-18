@@ -19,6 +19,11 @@ namespace YuNotes.Repositories
         {
             return db.Users.Any(u => u.Nickname == nickname);
         }
+
+        public bool RetryEmail(string email)
+        {
+            return db.Users.Any(u => u.Email == email);
+        }
         public async Task SignUpUser(User user)
         {
             db.Users.Add(user);

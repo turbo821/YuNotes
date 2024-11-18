@@ -1,10 +1,4 @@
-﻿body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
+﻿
 #hero {
     background: #f4f4f4;
     padding: 60px 20px;
@@ -31,4 +25,96 @@ h1, h2 {
 ul {
     padding: 0;
     list-style: none;
+}
+
+#features {
+    padding: 40px 0;
+    background-color: #f8f8f8;
+    text-align: center;
+}
+
+#features h2 {
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #333;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Адаптивная сетка */
+    grid-gap: 20px;
+    justify-content: center;
+}
+
+.feature {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.feature i {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.feature h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.feature p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+}
+
+#screenshots {
+    padding: 40px 0;
+    background-color: #f8f8f8;
+    text-align: center;
+}
+
+#screenshots h2 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+img {
+    height: 500px;
+}
+
+#contact {
+    padding: 40px 0;
+    text-align: center;
+}
+
+#contact h2 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #555;
+}
+
+.contact-info a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.social-links a {
+    margin: 0 10px;
+    font-size: 1.5em;
+    color: #555;
 }

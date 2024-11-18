@@ -8,6 +8,7 @@ namespace YuNotes.Services.Interfaces
         Task<bool> CheckLogin(LogInViewModel request);
         ClaimsIdentity GetClaimsIdentity(LogInViewModel request);
         bool NicknameIsRetryOrNull(string nickname);
+        bool EmailIsRetryOrNull(string email);
         Task SignUpUser(SignInViewModel data);
     }
 }

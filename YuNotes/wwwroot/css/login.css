@@ -145,3 +145,26 @@
     margin-top: -20px;
     text-align: right;
 }
+
+.field-validation-error {
+    color: #b94a48;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input.valid {
+    border: 1px solid #16a085;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-errors ul {
+    padding: 0;
+}
+.validation-summary-errors li {
+    list-style-type: none;
+}

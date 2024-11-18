@@ -25,12 +25,12 @@
 
             <div class="field-wrap">
                 <label asp-for="Note.Title">Заголовок</label>
-                <input type="text" asp-for="Note.Title" />
+                <input type="text" asp-for="Note.Title" autocomplete="off" />
             </div>
 
             <div class="field-wrap">
                 <label asp-for="Note.Text">Текст</label>
-                <textarea asp-for="Note.Text">@Model.Note.Text</textarea>
+                <textarea asp-for="Note.Text" autocomplete="off">@Model.Note.Text</textarea>
             </div>
 
             <div class="field-wrap">
