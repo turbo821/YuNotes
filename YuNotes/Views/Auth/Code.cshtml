@@ -4,34 +4,39 @@
 @section Links {
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 }
+@model YuNotes.ViewModels.PasswordRecoveryViewModel
 <div class="form">
 
     <div id="code">
         <h1>Восстановление пароля</h1>
-        <form action="/" method="post">
-
+        <form asp-action="Recovery" method="post">
+            <input type="hidden" asp-for="Code" value="@Model.Code"/> 
+            <input type="hidden" asp-for="Email" value="@Model.Email" />
             <div class="field-wrap">
                 <label>
                     Введите код подтверждения, высланный на нашу почту<span class="req">*</span>
                 </label>
-                <input type="text" required autocomplete="off" />
+                <input type="text" asp-for="InputCode" autocomplete="off" />
+                <span asp-validation-for="InputCode" />
             </div>
 
             <div class="field-wrap">
                 <label>
                     Новый пароль<span class="req">*</span>
                 </label>
-                <input type="password" required autocomplete="off" />
+                <input type="password" asp-for="Password" autocomplete="off" />
+                <span asp-validation-for="Password" />
             </div>
 
             <div class="field-wrap">
                 <label>
                     Повторите пароль<span class="req">*</span>
                 </label>
-                <input type="password" required autocomplete="off" />
+                <input type="password" asp-for="PasswordConfirm" autocomplete="off" />
+                <span asp-validation-for="PasswordConfirm" />
             </div>
 
-            <button type="submit" class="button button-block">Поменять пароль</button>
+            <input type="submit" class="button button-block" value="Поменять пароль" />
         </form>
     </div>
 

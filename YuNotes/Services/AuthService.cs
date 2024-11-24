@@ -16,11 +16,11 @@ namespace YuNotes.Services
             _repo = repo;
         }
 
-        public async Task<bool> CheckLogin(LogInViewModel request)
+        public async Task<bool> CheckLogin(string email, string password)
         {
-            return request.Email != null
-                && request.Password != null
-                && await _repo.LoginUser(request.Email, request.Password);
+            return email != null
+                && password != null
+                && await _repo.LoginUser(email, password);
         }
 
         public ClaimsIdentity GetClaimsIdentity(LogInViewModel request)
@@ -57,6 +57,10 @@ namespace YuNotes.Services
                 Groups = defaultGroups
             };
             await _repo.SignUpUser(user);
+        }
+        public async Task UpdatePassword(string email, string password)
+        {
+            await _repo.UpdatePassword(email, password.Encrypt());
         }
     }
 }

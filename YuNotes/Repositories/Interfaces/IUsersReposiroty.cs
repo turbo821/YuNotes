@@ -9,5 +9,6 @@ namespace YuNotes.Repositories.Interfaces
         Task SignUpUser(User user);
 
         Task<bool> LoginUser(string email, string password);
+        Task UpdatePassword(string email, string password);
     }
 }

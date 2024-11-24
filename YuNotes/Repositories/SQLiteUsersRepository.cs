@@ -40,5 +40,13 @@ namespace YuNotes.Repositories
             }
             return false;
         }
+
+        public async Task UpdatePassword(string email, string password)
+        {
+            var user = await db.Users.FirstOrDefaultAsync(u => u.Email == email);
+            user.Password = password;
+
+            await db.SaveChangesAsync();
+        }
     }
 }
