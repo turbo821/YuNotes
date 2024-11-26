@@ -36,8 +36,14 @@
                 <span asp-validation-for="PasswordConfirm" />
             </div>
 
-            <input type="submit" class="button button-block" value="Поменять пароль" />
+            <button type="submit" class="button button-block">Поменять пароль</button>
         </form>
     </div>
 
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

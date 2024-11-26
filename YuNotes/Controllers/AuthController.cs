@@ -84,6 +84,14 @@ namespace YuNotes.Controllers
         [Route("/inputemail")]
         public IActionResult InputEmail(EmailViewModel? model)
         {
+            if(model is not null)
+            {
+                model.Email = string.Empty;
+            }
+            else
+            {
+                model = new EmailViewModel() { Email = string.Empty };
+            }
             return View(model);
         }
 
@@ -91,9 +99,18 @@ namespace YuNotes.Controllers
         [Route("/code")]
         public async Task<IActionResult> Code(EmailViewModel model)
         {
-            string code = await _recoveryService.SendCodeAsync(model.Email);
-            PasswordRecoveryViewModel recovery = new PasswordRecoveryViewModel() { Code = code, Email = model.Email };
-            return View(recovery);
+            if (ModelState.IsValid && !string.IsNullOrEmpty(model.Email) && _authService.EmailIsRetryOrNull(model.Email!))
+            {
+                string code = await _recoveryService.SendCodeAsync(model.Email!);
+                PasswordRecoveryViewModel recovery = new PasswordRecoveryViewModel() { Code = code, Email = model.Email! };
+                return View(recovery);
+            }
+            else
+            {
+                ModelState.AddModelError("", "Профиля с таким email не существует!");
+                return View(nameof(InputEmail), model);
+            }
+
         }
 
         [HttpPost]
@@ -102,13 +119,13 @@ namespace YuNotes.Controllers
         {
             if (ModelState.IsValid && model.Code == model.InputCode && _authService.EmailIsRetryOrNull(model.Email))
             {
-                _authService.UpdatePassword(model.Email, model.Password);
+                await _authService.UpdatePassword(model.Email, model.Password);
                 return RedirectToAction("Login");
             }
             else
             {
-                ModelState.AddModelError("", "Ошибка");
-                return RedirectToAction(nameof(InputEmail), new EmailViewModel() { Email = model.Email });
+                ModelState.AddModelError("", "Код неверный, повторите попытку!");
+                return View(nameof(InputEmail), new EmailViewModel() { Email = model.Email });
             }
             
         }

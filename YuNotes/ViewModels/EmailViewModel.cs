@@ -8,6 +8,6 @@ namespace YuNotes.ViewModels
         [StringLength(100, MinimumLength = 4, ErrorMessage = "Длина от 4 до 100 символов")]
         [EmailAddress(ErrorMessage = "Адрес должен содержать символ @")]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; } = string.Empty;
+        public string? Email { get; set; }
     }
 }

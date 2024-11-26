@@ -13,14 +13,23 @@
         <form action="Code" method="post">
 
             <div class="field-wrap">
-                <label>
+                <label asp-for="Email">
                     Введите вашу электронную почту, на которую придет код подтверждения<span class="req">*</span>
                 </label>
-                <input type="text" asp-for="Email" required autocomplete="off" />
+                <input type="text" asp-for="Email" autocomplete="off" />
+                <span asp-validation-for="Email" />
             </div>
-            <a asp-action="Code">Код ссылка</a>
+
+            <div asp-validation-summary="ModelOnly"></div>
+
             <button type="submit" class="button button-block">Выслать код</button>
         </form>
     </div>
 
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
